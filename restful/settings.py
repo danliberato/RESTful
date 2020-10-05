@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
-    'drf_yasg',
+    'rest_framework',
+    'oauth2_provider',
     'restful',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'authenticator.AuthenticatorMiddleware'
 ]
 
 ROOT_URLCONF = 'restful.urls'
@@ -79,12 +82,12 @@ WSGI_APPLICATION = 'restful.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DB_NAME', 'restful'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASS', 'postgres'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432')
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': os.getenv('DB_NAME', 'restful'),
+        # 'USER': os.getenv('DB_USER', 'postgres'),
+        # 'PASSWORD': os.getenv('DB_PASS', 'postgres'),
+        # 'HOST': os.getenv('DB_HOST', 'localhost'),
+        # 'PORT': os.getenv('DB_PORT', '5432')
     }
 }
 
@@ -117,8 +120,29 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+APPEND_SLASH = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+JET_SIDE_MENU_COMPACT = True
+JET_INDEX_DASHBOARD = 'locker_api.dashboard.CustomIndexDashboard'
+JET_APP_INDEX_DASHBOARD = 'locker_api.dashboard.CustomAppIndexDashboard'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
